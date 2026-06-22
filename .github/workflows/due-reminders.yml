@@ -26,10 +26,10 @@ jobs:
       - id: build
         run: node .github/scripts/due-reminders.mjs
 
-      # Only sends when (a) something is due AND (b) mail secrets are configured.
-      # Until you add the secrets, the job runs green and simply sends nothing.
+      # Sends every day (a daily check-in). Guarded only on mail secrets,
+      # so until they're added the job runs green and sends nothing.
       - name: Send reminder email
-        if: steps.build.outputs.send == 'true' && env.MAIL_SERVER != ''
+        if: env.MAIL_SERVER != ''
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: ${{ secrets.MAIL_SERVER }}
