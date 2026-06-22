@@ -304,6 +304,36 @@ body.entered .bar,body.entered .wrap{animation:appIn .5s ease forwards}
 .lock-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--ink-soft);font-size:14px;display:inline-flex;align-items:center;justify-content:center}
 .lock-btn:hover{border-color:var(--line-strong);color:var(--ink)}
 
+/* ---- priority + focus + subtasks ---- */
+.prio-pick{display:flex;gap:8px}
+.prio-pick button{flex:1;border:1px solid var(--line-strong);border-radius:10px;padding:9px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--ink-soft);display:flex;align-items:center;justify-content:center;gap:6px}
+.prio-pick button.on{border-color:var(--ink);color:var(--ink);background:var(--paper)}
+.prio-dot{width:9px;height:9px;border-radius:50%}
+.prio-high{background:#E8590C}.prio-normal{background:var(--ink-faint)}.prio-low{background:#B6C2D9}
+.prio-chip{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:6px}
+.prio-chip.high{background:#FDE0D2;color:#C0440E}
+.prio-chip.low{background:#EEF1F6;color:#8A93A6}
+.sub-badge{font-family:var(--mono);font-size:11px;color:var(--ink-faint);display:inline-flex;align-items:center;gap:4px}
+.starbtn{background:none;border:none;cursor:pointer;font-size:16px;line-height:1;color:var(--ink-faint);padding:2px 4px;flex-shrink:0}
+.starbtn.on{color:#F6B600}
+.starbtn:hover{color:#F6B600}
+.focus-chk{display:flex;align-items:center;gap:9px;cursor:pointer;text-transform:none;letter-spacing:0;color:var(--ink);font-family:var(--body);font-size:13.5px}
+.focus-chk input{width:17px;height:17px;accent-color:#F6B600}
+/* subtask editor */
+.sub-rows{display:flex;flex-direction:column;gap:7px}
+.sub-row{display:flex;gap:8px;align-items:center}
+.sub-row input[type=text]{flex:1;background:var(--paper);border:1px solid var(--line-strong);border-radius:9px;padding:8px 10px;font-size:13px}
+.sub-row .done-chk{width:17px;height:17px;flex-shrink:0;accent-color:#2E9E54}
+.sub-row .del{color:var(--ink-faint);width:32px;height:34px;border:1px solid var(--line);border-radius:8px;flex-shrink:0}
+.sub-row .del:hover{color:var(--over-ink)}
+/* today's focus section */
+.focus-list{display:flex;flex-direction:column;gap:9px}
+.focus-card{display:flex;align-items:center;gap:12px;background:linear-gradient(180deg,#FFFDF4,#fff);border:1px solid #F2E6BC;border-left:3px solid #F6B600;border-radius:11px;padding:12px 14px;box-shadow:var(--shadow);cursor:pointer}
+.focus-card .body{flex:1;min-width:0}
+.focus-card .ttl{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.focus-card .meta{font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-top:3px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.focus-empty{padding:16px;border:1px dashed var(--line-strong);border-radius:11px;font-family:var(--mono);font-size:12px;color:var(--ink-faint);text-align:center}
+
 @media(max-width:900px){
   .login-mid{flex-direction:column;justify-content:center;gap:16px;padding:24px}
   .login-card,.login-clock{max-width:380px}
@@ -399,6 +429,9 @@ body.entered .bar,body.entered .wrap{animation:appIn .5s ease forwards}
 
     <div id="mtToday"></div>
 
+    <div class="sec-head"><h2>Today's focus</h2><span class="count" id="focusCount"></span></div>
+    <div id="focusBox"></div>
+
     <div class="sec-head"><h2>Needs attention</h2><span class="count" id="attCount"></span></div>
     <div class="att-list" id="attList"></div>
   </section>
@@ -453,6 +486,22 @@ body.entered .bar,body.entered .wrap{animation:appIn .5s ease forwards}
           </select>
         </div>
         <div class="field"><label>Due date</label><input type="date" id="fDue"></div>
+      </div>
+      <div class="field">
+        <label>Priority</label>
+        <div class="prio-pick" id="priopick">
+          <button data-prio="high" onclick="pickPrio('high')"><span class="prio-dot prio-high"></span>High</button>
+          <button data-prio="normal" onclick="pickPrio('normal')"><span class="prio-dot prio-normal"></span>Normal</button>
+          <button data-prio="low" onclick="pickPrio('low')"><span class="prio-dot prio-low"></span>Low</button>
+        </div>
+      </div>
+      <div class="field">
+        <label class="focus-chk"><input type="checkbox" id="fFocus"> ⭐ Make this one of today's Big 3 (focus)</label>
+      </div>
+      <div class="field">
+        <label>Checklist / steps</label>
+        <div class="sub-rows" id="subRows"></div>
+        <button class="linkadd" onclick="addSubRow()">+ Add step</button>
       </div>
       <div class="field"><label>Collaborators</label><input type="text" id="fCollab" placeholder="Comma-separated — e.g. Jason, Emily"></div>
       <div class="field">
@@ -580,7 +629,7 @@ const LS_TASKS='mt_tasks_v4', LS_MEET='mt_meet_v3', LS_SYNC='mt_sync_v3';
 let tasks    = load(LS_TASKS) || seed();
 let meetings = load(LS_MEET)  || seedMeet();
 let sync     = load(LS_SYNC)  || {owner:'',repo:'',path:'tasks.json',token:'',sha:null};
-let editingId=null, editingMeet=null, manualCat=null, boardFilter='all';
+let editingId=null, editingMeet=null, manualCat=null, manualPrio='normal', boardFilter='all';
 let calCursor=new Date(); calCursor.setDate(1);
 
 const CATS={
@@ -615,6 +664,17 @@ function todayIso(){const x=new Date();return x.getFullYear()+'-'+String(x.getMo
 function daysTo(due){if(!due)return null;return Math.round((startOfDay(due)-startOfDay(new Date()))/86400000)}
 function fmtDate(d){return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
 function byDue(a,b){if(!a.due)return 1;if(!b.due)return -1;return new Date(a.due)-new Date(b.due)}
+const PRANK={high:0,normal:1,low:2};
+function prioOf(t){return t.priority||'normal';}
+function byPriDue(a,b){const d=PRANK[prioOf(a)]-PRANK[prioOf(b)];return d!==0?d:byDue(a,b);}
+function isFocus(t){return t.focusDate===todayIso();}
+function prioChip(t){const p=prioOf(t);return p==='high'?'<span class="prio-chip high">High</span>':p==='low'?'<span class="prio-chip low">Low</span>':'';}
+function subDone(t){const s=t.subtasks||[];return {done:s.filter(x=>x.done).length,total:s.length};}
+function subBadge(t){const{done,total}=subDone(t);return total?`<span class="sub-badge">☑ ${done}/${total}</span>`:'';}
+function toggleFocus(id,ev){if(ev)ev.stopPropagation();const t=tasks.find(x=>x.id===id);if(!t)return;
+  if(isFocus(t)){t.focusDate=null;}
+  else{const n=tasks.filter(x=>isFocus(x)).length;if(n>=3){alert("Today's focus is a short list — keep the Big 3 to three. Clear one first.");return;}t.focusDate=todayIso();}
+  persist();render();}
 function isoIn(d){const x=new Date();x.setDate(x.getDate()+d);return x.toISOString().slice(0,10)}
 
 function seed(){return [
@@ -690,16 +750,29 @@ function renderDash(){
         `<div class="mt-pill" onclick="openMeeting('${m.id}')"><span class="clock">${m.time||'—'}</span>${esc(m.title)}</div>`).join('')+'</div>'
     : '';
 
+  // today's focus (Big 3)
+  const focus=open.filter(isFocus).sort(byPriDue);
+  document.getElementById('focusCount').textContent=focus.length?focus.length+' of 3':'';
+  document.getElementById('focusBox').innerHTML=focus.length?'<div class="focus-list">'+focus.map(t=>`
+    <div class="focus-card" onclick="openTask('${t.id}')">
+      <div class="body"><div class="ttl">${esc(t.title)}</div>
+        <div class="meta"><span>${CATS[t.cat].label}</span>${prioChip(t)}${t.due?'<span>· '+(daysTo(t.due)<0?(-daysTo(t.due)+'d overdue'):daysTo(t.due)===0?'due today':'due '+fmtDate(t.due))+'</span>':''}${subBadge(t)}</div>
+      </div>${dueChip(t.due)}
+      <button class="starbtn on" onclick="toggleFocus('${t.id}',event)" title="Remove from today's focus">★</button>
+    </div>`).join('')+'</div>'
+    :'<div class="focus-empty">Pick up to 3 things to win today — tap the ☆ on any item below, or set "focus" when editing a task.</div>';
+
   // attention
-  let att=open.filter(t=>(t.due&&daysTo(t.due)<=0)||t.status==='blocked');att.sort(byDue);
+  let att=open.filter(t=>(t.due&&daysTo(t.due)<=0)||t.status==='blocked');att.sort(byPriDue);
   document.getElementById('attCount').textContent=att.length?att.length+' item'+(att.length>1?'s':''):'';
   const list=document.getElementById('attList');
   list.innerHTML=att.length?att.map(t=>`
     <div class="att" onclick="openTask('${t.id}')">
       <span class="rail" style="background:${CATS[t.cat].color}"></span>
       <div class="body"><div class="ttl">${esc(t.title)}</div>
-        <div class="meta"><span>${CATS[t.cat].label}</span>${t.status==='blocked'?'<span>· Blocked</span>':''}${t.collab&&t.collab.length?'<span>· '+esc(t.collab.join(', '))+'</span>':''}</div>
+        <div class="meta"><span>${CATS[t.cat].label}</span>${prioChip(t)}${t.status==='blocked'?'<span>· Blocked</span>':''}${subBadge(t)}${t.collab&&t.collab.length?'<span>· '+esc(t.collab.join(', '))+'</span>':''}</div>
       </div>${dueChip(t.due)}
+      <button class="starbtn ${isFocus(t)?'on':''}" onclick="toggleFocus('${t.id}',event)" title="${isFocus(t)?'Remove from':'Add to'} today's focus">${isFocus(t)?'★':'☆'}</button>
     </div>`).join('')
     :'<div class="empty">Nothing on fire. Open work is tracking ahead of its due dates.</div>';
 }
@@ -713,7 +786,7 @@ function renderBoard(){
     const sw=v==='all'?'':`<span class="swatch" style="background:${CATS[v].color}"></span>`;
     return `<button class="fchip ${boardFilter===v?'on':''}" onclick="setFilter('${v}')">${sw}${l}</button>`;}).join('');
   document.getElementById('columns').innerHTML=COLS.map(([key,label])=>{
-    let items=tasks.filter(t=>t.status===key&&(boardFilter==='all'||t.cat===boardFilter));items.sort(byDue);
+    let items=tasks.filter(t=>t.status===key&&(boardFilter==='all'||t.cat===boardFilter));items.sort(byPriDue);
     return `<div class="col" data-status="${key}" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event,'${key}')">
       <div class="col-head"><span class="name">${label}</span><span class="n">${items.length}</span></div>
       <div class="cards">${items.map(cardHTML).join('')}</div></div>`;}).join('');
@@ -724,7 +797,8 @@ function cardHTML(t){
   return `<div class="card ${t.status==='done'?'done-card':''}" draggable="true" data-id="${t.id}" ondragstart="dragStart(event,'${t.id}')" ondragend="dragEnd(event)" onclick="openTask('${t.id}')">
     <span class="rail" style="background:${CATS[t.cat].color}"></span>
     <div class="ct">${esc(t.title)}</div>
-    <div class="cmeta"><span class="tag" style="background:${tagBg(t.cat)};color:${tagInk(t.cat)}">${CATS[t.cat].label}</span>${dchip}${t.links&&t.links.length?`<span class="icon-meta">🔗 ${t.links.length}</span>`:''}${t.collab&&t.collab.length?`<span class="icon-meta">👤 ${t.collab.length}</span>`:''}</div>
+    ${isFocus(t)?`<button class="starbtn on" style="position:absolute;top:8px;right:8px" onclick="toggleFocus('${t.id}',event)" title="Remove from today's focus">★</button>`:''}
+    <div class="cmeta"><span class="tag" style="background:${tagBg(t.cat)};color:${tagInk(t.cat)}">${CATS[t.cat].label}</span>${prioChip(t)}${dchip}${subBadge(t)}${t.links&&t.links.length?`<span class="icon-meta">🔗 ${t.links.length}</span>`:''}${t.collab&&t.collab.length?`<span class="icon-meta">👤 ${t.collab.length}</span>`:''}</div>
   </div>`;
 }
 function tagBg(c){return c==='codetrace'?'var(--ct-bg)':c==='jorvix'?'var(--jx-bg)':c==='nvidia'?'var(--nv-bg)':'var(--dr-bg)'}
@@ -775,6 +849,10 @@ function openTask(id){
   document.getElementById('fRemarks').value=t?(t.remarks||''):'';
   document.getElementById('attRows').innerHTML='';
   (t&&t.links?t.links:[]).forEach(l=>addLinkRow(l.label,l.url));
+  manualPrio=t?prioOf(t):'normal';pickPrio(manualPrio);
+  document.getElementById('fFocus').checked=t?isFocus(t):false;
+  document.getElementById('subRows').innerHTML='';
+  (t&&t.subtasks?t.subtasks:[]).forEach(s=>addSubRow(s.text,s.done));
   if(t){manualCat=t.cat;pickCat(t.cat,true);}else autoCat();
   document.getElementById('taskScrim').classList.add('on');
   if(!id)setTimeout(()=>document.getElementById('fTitle').focus(),60);
@@ -791,6 +869,13 @@ function pickCat(c,isAuto){
   document.querySelectorAll('#catpick button').forEach(b=>b.classList.toggle('on',b.dataset.cat===c));
   if(!isAuto)document.getElementById('autohint').textContent='Set manually.';
 }
+function pickPrio(p){manualPrio=p;document.querySelectorAll('#priopick button').forEach(b=>b.classList.toggle('on',b.dataset.prio===p));}
+function addSubRow(text,done){
+  const row=document.createElement('div');row.className='sub-row';
+  row.innerHTML=`<input type="checkbox" class="done-chk" ${done?'checked':''}><input type="text" placeholder="Step…" value="${esc(text||'')}"><button class="del" onclick="this.parentNode.remove()">×</button>`;
+  document.getElementById('subRows').appendChild(row);
+}
+function collectSubtasks(){return [...document.querySelectorAll('#subRows .sub-row')].map(r=>({text:r.querySelector('input[type=text]').value.trim(),done:r.querySelector('.done-chk').checked})).filter(s=>s.text);}
 function addLinkRow(label,url){
   const row=document.createElement('div');row.className='att-row';
   row.innerHTML=`<input type="text" placeholder="Label" value="${esc(label||'')}" style="max-width:130px"><input type="url" placeholder="https://… (OneDrive / Drive link)" value="${esc(url||'')}"><button class="del" onclick="this.parentNode.remove()">×</button>`;
@@ -801,9 +886,12 @@ function saveTask(){
   const title=document.getElementById('fTitle').value.trim();if(!title){document.getElementById('fTitle').focus();return;}
   const status=document.getElementById('fStatus').value;
   const cat=document.querySelector('#catpick button.on')?.dataset.cat||'codetrace';
-  const data={title,cat,status,due:document.getElementById('fDue').value||null,
+  const prio=document.querySelector('#priopick button.on')?.dataset.prio||manualPrio||'normal';
+  let focusDate=document.getElementById('fFocus').checked?todayIso():null;
+  if(focusDate){const others=tasks.filter(x=>isFocus(x)&&x.id!==editingId).length;if(others>=3){alert("You already have 3 focus tasks today — keep the Big 3 to three. This one wasn't added to focus.");focusDate=null;}}
+  const data={title,cat,status,priority:prio,focusDate,due:document.getElementById('fDue').value||null,
     collab:document.getElementById('fCollab').value.split(',').map(s=>s.trim()).filter(Boolean),
-    links:collectLinks(),remarks:document.getElementById('fRemarks').value.trim()};
+    links:collectLinks(),subtasks:collectSubtasks(),remarks:document.getElementById('fRemarks').value.trim()};
   if(editingId){const t=tasks.find(x=>x.id===editingId);const was=t.completedAt;Object.assign(t,data);t.completedAt=status==='done'?(was||todayIso()):null;}
   else{tasks.push({id:uid(),...data,completedAt:status==='done'?todayIso():null});}
   persist();render();closeTask();
