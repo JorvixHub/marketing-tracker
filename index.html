@@ -229,12 +229,18 @@ a{color:var(--jorvix)}
 .login-scrim{
   position:fixed;inset:0;z-index:100;display:none;
   flex-direction:column;
-  background:
-    radial-gradient(1200px 620px at 72% 38%, rgba(140,150,170,.10), transparent 60%),
-    radial-gradient(900px 560px at 26% 72%, rgba(80,92,120,.10), transparent 60%),
-    #0b0d12;
+  background:#010828;            /* deep space navy — fallback before video loads */
   color:#e7e8ec;
+  overflow:hidden;
 }
+/* Section-2 "Hello, I'm Orbis" looping video as motion background */
+.login-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
+.login-tint{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(1100px 620px at 50% 42%, rgba(1,8,40,0) 0%, rgba(1,8,40,.35) 70%, rgba(1,8,40,.72) 100%),
+    linear-gradient(180deg, rgba(1,8,40,.55) 0%, rgba(1,8,40,.25) 40%, rgba(1,8,40,.6) 100%);
+}
+.login-top,.login-mid,.login-foot{position:relative;z-index:2}
 body.locked{overflow:hidden;padding-bottom:0}
 body.locked .login-scrim{display:flex}
 body.locked .bar,body.locked .wrap,body.locked .fab{display:none!important}
@@ -296,6 +302,9 @@ body.locked .bar,body.locked .wrap,body.locked .fab{display:none!important}
 
 <!-- ============ LOGIN GATE ============ -->
 <div class="login-scrim" id="loginScrim">
+  <video class="login-video" autoplay loop muted playsinline preload="auto"
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_151551_992053d1-3d3e-4b8c-abac-45f22158f411.mp4"></video>
+  <div class="login-tint"></div>
   <div class="login-top">
     <div class="lw"><span class="t">Marketing Tracker</span><span class="s">CODETRACE × JORVIX</span></div>
   </div>
