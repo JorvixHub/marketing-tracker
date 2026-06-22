@@ -1,0 +1,44 @@
+name: Due-task email reminders
+
+# Emails Emily anything overdue or due today.
+# Runs daily at 08:00 Malaysia time (00:00 UTC), and can be run manually
+# from the Actions tab (workflow_dispatch) to test.
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    env:
+      MAIL_SERVER: ${{ secrets.MAIL_SERVER }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - id: build
+        run: node .github/scripts/due-reminders.mjs
+
+      # Only sends when (a) something is due AND (b) mail secrets are configured.
+      # Until you add the secrets, the job runs green and simply sends nothing.
+      - name: Send reminder email
+        if: steps.build.outputs.send == 'true' && env.MAIL_SERVER != ''
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT }}
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from: Emily's Prime Deck <${{ secrets.MAIL_USERNAME }}>
+          to: ${{ secrets.MAIL_TO }}
+          subject: ${{ steps.build.outputs.subject }}
+          body: ${{ steps.build.outputs.text_body }}
+          html_body: ${{ steps.build.outputs.html_body }}
