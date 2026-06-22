@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Marketing Tracker — CODETRACE × JORVIX</title>
+<title>Emily's Prime Deck — CODETRACE × JORVIX</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -327,11 +327,11 @@ body.entered .bar,body.entered .wrap{animation:appIn .5s ease forwards}
     src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_151551_992053d1-3d3e-4b8c-abac-45f22158f411.mp4"></video>
   <div class="login-tint"></div>
   <div class="login-top">
-    <div class="lw"><span class="t">Marketing Tracker</span><span class="s">CODETRACE × JORVIX</span></div>
+    <div class="lw"><span class="t">Emily's Prime Deck</span><span class="s">CODETRACE × JORVIX</span></div>
   </div>
   <div class="login-mid">
     <form class="login-card" onsubmit="return tryLogin(event)">
-      <div class="brand"><span class="t">Marketing Tracker</span><span class="s">CODETRACE × JORVIX</span></div>
+      <div class="brand"><span class="t">Emily's Prime Deck</span><span class="s">CODETRACE × JORVIX</span></div>
       <h1>Welcome back</h1>
       <div class="sub">Enter your password to open the tracker.</div>
       <div class="login-pass">
@@ -352,7 +352,7 @@ body.entered .bar,body.entered .wrap{animation:appIn .5s ease forwards}
 
 <div class="bar">
   <div class="wordmark">
-    <span class="t">Marketing Tracker</span>
+    <span class="t">Emily's Prime Deck</span>
     <span class="s">CODETRACE × JORVIX</span>
   </div>
   <div class="spacer"></div>
@@ -816,7 +816,7 @@ function deleteMeeting(){if(!editingMeet)return;meetings=meetings.filter(m=>m.id
 /* ---------------- Outlook .ics export (no admin needed) ---------------- */
 function icsEsc(s){return (s||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n')}
 function downloadICS(){
-  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Marketing Tracker//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Emily\'s Prime Deck//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
   tasks.filter(t=>t.due).forEach(t=>{
     const d=t.due.replace(/-/g,'');
     L.push('BEGIN:VEVENT','UID:'+t.id+'@mtracker','DTSTART;VALUE=DATE:'+d,'DTEND;VALUE=DATE:'+d,
