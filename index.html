@@ -22,11 +22,13 @@
   --codetrace:#FFE000;
   --jorvix:#154BA1;
   --director:#C92A2A;
+  --nvidia:#76B900;
 
   /* category pastel tints (tags/chips) */
   --ct-bg:#FFF7C2;  --ct-ink:#8A7400;
   --jx-bg:#E3ECF9;  --jx-ink:#154BA1;
   --dr-bg:#FBE3E3;  --dr-ink:#C92A2A;
+  --nv-bg:#E9F6D2;  --nv-ink:#4C7A00;
 
   /* status pastels (board columns) */
   --todo-bg:#EDEBFA;     --todo-ln:#E0DCF5;     --todo-ink:#6A63B0;
@@ -185,6 +187,7 @@ a{color:var(--jorvix)}
 .cpill.codetrace{background:var(--ct-bg);color:var(--ct-ink)}
 .cpill.jorvix{background:var(--jx-bg);color:var(--jx-ink)}
 .cpill.director{background:var(--dr-bg);color:var(--dr-ink)}
+.cpill.nvidia{background:var(--nv-bg);color:var(--nv-ink)}
 .cpill.meeting{background:#EFE7FB;color:#7C5BD6;display:flex;gap:4px;align-items:center}
 
 /* ---------- modal ---------- */
@@ -435,6 +438,7 @@ body.entered .bar,body.entered .wrap{animation:appIn .5s ease forwards}
           <button data-cat="codetrace" onclick="pickCat('codetrace')"><span class="swatch" style="background:var(--codetrace)"></span>CODETRACE</button>
           <button data-cat="jorvix" onclick="pickCat('jorvix')"><span class="swatch" style="background:var(--jorvix)"></span>JORVIX</button>
           <button data-cat="director" onclick="pickCat('director')"><span class="swatch" style="background:var(--director)"></span>DIRECTOR</button>
+          <button data-cat="nvidia" onclick="pickCat('nvidia')"><span class="swatch" style="background:var(--nvidia)"></span>NVIDIA</button>
         </div>
         <div class="autohint" id="autohint"></div>
       </div>
@@ -569,7 +573,7 @@ if(sessionStorage.getItem(AUTH_KEY)==='1')document.body.classList.remove('locked
 else setTimeout(()=>document.getElementById('loginPass').focus(),60);
 
 /* ---------------- state ---------------- */
-const LS_TASKS='mt_tasks_v3', LS_MEET='mt_meet_v3', LS_SYNC='mt_sync_v3';
+const LS_TASKS='mt_tasks_v4', LS_MEET='mt_meet_v3', LS_SYNC='mt_sync_v3';
 let tasks    = load(LS_TASKS) || seed();
 let meetings = load(LS_MEET)  || seedMeet();
 let sync     = load(LS_SYNC)  || {owner:'',repo:'',path:'tasks.json',token:'',sha:null};
@@ -579,18 +583,20 @@ let calCursor=new Date(); calCursor.setDate(1);
 const CATS={
   codetrace:{label:'CODETRACE',color:'var(--codetrace)'},
   jorvix:{label:'JORVIX',color:'var(--jorvix)'},
-  director:{label:'DIRECTOR',color:'var(--director)'}
+  director:{label:'DIRECTOR',color:'var(--director)'},
+  nvidia:{label:'NVIDIA',color:'var(--nvidia)'}
 };
 const COLS=[['todo','To do'],['progress','In progress'],['blocked','Blocked'],['done','Done']];
 
 /* keyword engine — runs live on GitHub Pages */
 const KW={
-  codetrace:['codetrace','aoi','anomalygen','detecxion','machine vision','inspection','semiconductor','e&e','computex','nvidia','wordpress','elementor','brochure','signature','website','emily','isaiah','rowan','kenny'],
-  jorvix:['jorvix','ultron','humanoid','robot','leasing','rental','deck','shah alam','signboard','jorvixstudio','starfield'],
-  director:['director','approval','approve','sign-off','sign off','signoff','jason','strategy','budget approval','board review','escalate','decision']
+  codetrace:['codetrace','aoi','anomalygen','detecxion','machine vision','inspection','semiconductor','e&e','computex','wordpress','elementor','brochure','signature','emily','isaiah','rowan','kenny'],
+  jorvix:['jorvix','ultron','humanoid','robot','leasing','rental','deck','shah alam','signboard','jorvixstudio','starfield','oppo','reno','kol','richmond'],
+  director:['director','approval','approve','sign-off','sign off','signoff','jason','strategy','budget approval','board review','escalate','decision'],
+  nvidia:['nvidia','deep learning','generative ai','diffusion model','diffusion','ai platform','ai course','cuda','dli','neural network']
 };
 function categorize(text){
-  const t=(text||'').toLowerCase();const s={codetrace:0,jorvix:0,director:0};
+  const t=(text||'').toLowerCase();const s={codetrace:0,jorvix:0,director:0,nvidia:0};
   for(const c in KW)for(const w of KW[c])if(t.includes(w))s[c]+=w.length>6?2:1;
   let best='codetrace',max=0;for(const c in s)if(s[c]>max){max=s[c];best=c;}
   return {cat:max>0?best:'codetrace',confident:max>0};
@@ -609,10 +615,22 @@ function byDue(a,b){if(!a.due)return 1;if(!b.due)return -1;return new Date(a.due
 function isoIn(d){const x=new Date();x.setDate(x.getDate()+d);return x.toISOString().slice(0,10)}
 
 function seed(){return [
-  {id:uid(),title:'NVIDIA sign-off on Computex gallery VIP photos',cat:'director',status:'blocked',due:isoIn(2),collab:['Jason','Pei Yi'],links:[],remarks:'Awaiting written approval before In Conversation section publishes.',completedAt:null},
-  {id:uid(),title:'CODETRACE site — add WP Rocket caching',cat:'codetrace',status:'progress',due:isoIn(4),collab:['Jason'],links:[],remarks:'Needs admin access. High TTFB from no page caching.',completedAt:null},
-  {id:uid(),title:'Fix broken /contact/ footer link + tel mismatch',cat:'codetrace',status:'todo',due:isoIn(0),collab:[],links:[],remarks:'',completedAt:null},
-  {id:uid(),title:'JORVIX leasing deck — retouch ULTRON hero render',cat:'jorvix',status:'todo',due:isoIn(9),collab:[],links:[],remarks:'Background removal + upscale before hero works at scale.',completedAt:null}
+  /* JORVIX */
+  {id:uid(),title:'OPPO Reno Event Proposal & Overview',cat:'jorvix',status:'todo',due:'2026-06-23',collab:[],links:[],remarks:'',completedAt:null},
+  {id:uid(),title:'James from Mr Clean Laundry — Meeting Prep',cat:'jorvix',status:'todo',due:'2026-06-22',collab:[],links:[],remarks:'',completedAt:null},
+  {id:uid(),title:'Scott Lee from Richmond Asia Group — Prep & inform Ms Joann',cat:'jorvix',status:'todo',due:'2026-06-23',collab:[],links:[],remarks:'',completedAt:null},
+  {id:uid(),title:'JORVIX website theme',cat:'jorvix',status:'todo',due:'2026-07-15',collab:[],links:[],remarks:'',completedAt:null},
+  {id:uid(),title:'JORVIX SMM layout',cat:'jorvix',status:'todo',due:'2026-06-30',collab:[],links:[],remarks:'Due this month.',completedAt:null},
+  {id:uid(),title:'Redraft the KOL scripts for the remaining 2–3 KOLs',cat:'jorvix',status:'todo',due:'2026-06-30',collab:[],links:[],remarks:'Due this month.',completedAt:null},
+  /* CODETRACE */
+  {id:uid(),title:'CODETRACE website theme',cat:'codetrace',status:'todo',due:'2026-06-30',collab:[],links:[],remarks:'Separate into individual pages — landing, about, contact, etc. Due this month.',completedAt:null},
+  {id:uid(),title:'CODETRACE SMM layout',cat:'codetrace',status:'todo',due:'2026-07-10',collab:[],links:[],remarks:'',completedAt:null},
+  {id:uid(),title:'Namecard designs for all',cat:'codetrace',status:'todo',due:null,collab:[],links:[],remarks:'',completedAt:null},
+  {id:uid(),title:'Add personal profile on CODETRACE website?',cat:'codetrace',status:'todo',due:null,collab:[],links:[],remarks:'To confirm — pending decision.',completedAt:null},
+  /* NVIDIA */
+  {id:uid(),title:'Deep Learning AI course',cat:'nvidia',status:'todo',due:null,collab:[],links:[],remarks:'',completedAt:null},
+  {id:uid(),title:'Generative AI with Diffusion Models',cat:'nvidia',status:'todo',due:null,collab:[],links:[],remarks:'',completedAt:null},
+  {id:uid(),title:'AI Platforms',cat:'nvidia',status:'todo',due:null,collab:[],links:[],remarks:'',completedAt:null}
 ];}
 function seedMeet(){return [
   {id:uid(),title:'Weekly sync with Jason',date:isoIn(0),time:'15:00',attendees:['Jason'],link:''}
@@ -654,7 +672,7 @@ function renderDash(){
   }
 
   // category mix of open work
-  const mix={codetrace:0,jorvix:0,director:0};
+  const mix={codetrace:0,jorvix:0,director:0,nvidia:0};
   open.forEach(t=>mix[t.cat]=(mix[t.cat]||0)+1);
   const total=open.length||1;
   document.getElementById('mixbar').innerHTML=Object.keys(CATS).map(c=>
@@ -706,8 +724,8 @@ function cardHTML(t){
     <div class="cmeta"><span class="tag" style="background:${tagBg(t.cat)};color:${tagInk(t.cat)}">${CATS[t.cat].label}</span>${dchip}${t.links&&t.links.length?`<span class="icon-meta">🔗 ${t.links.length}</span>`:''}${t.collab&&t.collab.length?`<span class="icon-meta">👤 ${t.collab.length}</span>`:''}</div>
   </div>`;
 }
-function tagBg(c){return c==='codetrace'?'var(--ct-bg)':c==='jorvix'?'var(--jx-bg)':'var(--dr-bg)'}
-function tagInk(c){return c==='codetrace'?'var(--ct-ink)':c==='jorvix'?'var(--jx-ink)':'var(--dr-ink)'}
+function tagBg(c){return c==='codetrace'?'var(--ct-bg)':c==='jorvix'?'var(--jx-bg)':c==='nvidia'?'var(--nv-bg)':'var(--dr-bg)'}
+function tagInk(c){return c==='codetrace'?'var(--ct-ink)':c==='jorvix'?'var(--jx-ink)':c==='nvidia'?'var(--nv-ink)':'var(--dr-ink)'}
 function setFilter(v){boardFilter=v;renderBoard();}
 
 /* drag & drop */
