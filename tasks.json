@@ -198,7 +198,7 @@
       "id": "tmqqbf284nwfz",
       "title": "JORVIX Letterhead",
       "cat": "jorvix",
-      "status": "progress",
+      "status": "done",
       "priority": "high",
       "focusDate": "2026-06-23",
       "due": null,
@@ -206,7 +206,7 @@
       "links": [],
       "subtasks": [],
       "remarks": "",
-      "completedAt": null
+      "completedAt": "2026-06-23"
     }
   ],
   "meetings": []
