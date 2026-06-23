@@ -1,18 +1,148 @@
 {
   "tasks": [
-    { "id": "t1",  "title": "OPPO Reno Event Proposal & Overview", "cat": "jorvix", "status": "todo", "due": "2026-06-23", "collab": [], "links": [], "remarks": "", "completedAt": null },
-    { "id": "t2",  "title": "James from Mr Clean Laundry — Meeting Prep", "cat": "jorvix", "status": "todo", "due": "2026-06-22", "collab": [], "links": [], "remarks": "", "completedAt": null },
-    { "id": "t3",  "title": "Scott Lee from Richmond Asia Group — Prep & inform Ms Joann", "cat": "jorvix", "status": "todo", "due": "2026-06-23", "collab": [], "links": [], "remarks": "", "completedAt": null },
-    { "id": "t4",  "title": "JORVIX website theme", "cat": "jorvix", "status": "todo", "due": "2026-07-15", "collab": [], "links": [], "remarks": "", "completedAt": null },
-    { "id": "t5",  "title": "JORVIX SMM layout", "cat": "jorvix", "status": "todo", "due": "2026-06-30", "collab": [], "links": [], "remarks": "Due this month.", "completedAt": null },
-    { "id": "t6",  "title": "Redraft the KOL scripts for the remaining 2–3 KOLs", "cat": "jorvix", "status": "todo", "due": "2026-06-30", "collab": [], "links": [], "remarks": "Due this month.", "completedAt": null },
-    { "id": "t7",  "title": "CODETRACE website theme", "cat": "codetrace", "status": "todo", "due": "2026-06-30", "collab": [], "links": [], "remarks": "Separate into individual pages — landing, about, contact, etc. Due this month.", "completedAt": null },
-    { "id": "t8",  "title": "CODETRACE SMM layout", "cat": "codetrace", "status": "todo", "due": "2026-07-10", "collab": [], "links": [], "remarks": "", "completedAt": null },
-    { "id": "t9",  "title": "Namecard designs for all", "cat": "codetrace", "status": "todo", "due": null, "collab": [], "links": [], "remarks": "", "completedAt": null },
-    { "id": "t10", "title": "Add personal profile on CODETRACE website?", "cat": "codetrace", "status": "todo", "due": null, "collab": [], "links": [], "remarks": "To confirm — pending decision.", "completedAt": null },
-    { "id": "t11", "title": "Deep Learning AI course", "cat": "nvidia", "status": "todo", "due": null, "collab": [], "links": [], "remarks": "", "completedAt": null },
-    { "id": "t12", "title": "Generative AI with Diffusion Models", "cat": "nvidia", "status": "todo", "due": null, "collab": [], "links": [], "remarks": "", "completedAt": null },
-    { "id": "t13", "title": "AI Platforms", "cat": "nvidia", "status": "todo", "due": null, "collab": [], "links": [], "remarks": "", "completedAt": null }
+    {
+      "id": "t1",
+      "title": "OPPO Reno Event Proposal & Overview",
+      "cat": "jorvix",
+      "status": "todo",
+      "due": "2026-06-23",
+      "collab": [],
+      "links": [],
+      "remarks": "",
+      "completedAt": null
+    },
+    {
+      "id": "t2",
+      "title": "James from Mr Clean Laundry — Meeting Prep",
+      "cat": "jorvix",
+      "status": "progress",
+      "due": "2026-06-22",
+      "collab": [],
+      "links": [],
+      "remarks": "",
+      "completedAt": null
+    },
+    {
+      "id": "t3",
+      "title": "Scott Lee from Richmond Asia Group — Prep & inform Ms Joann",
+      "cat": "jorvix",
+      "status": "todo",
+      "due": "2026-06-23",
+      "collab": [],
+      "links": [],
+      "remarks": "",
+      "completedAt": null
+    },
+    {
+      "id": "t4",
+      "title": "JORVIX website theme",
+      "cat": "jorvix",
+      "status": "todo",
+      "due": "2026-07-15",
+      "collab": [],
+      "links": [],
+      "remarks": "",
+      "completedAt": null
+    },
+    {
+      "id": "t5",
+      "title": "JORVIX SMM layout",
+      "cat": "jorvix",
+      "status": "todo",
+      "due": "2026-06-30",
+      "collab": [],
+      "links": [],
+      "remarks": "Due this month.",
+      "completedAt": null
+    },
+    {
+      "id": "t6",
+      "title": "Redraft the KOL scripts for the remaining 2–3 KOLs",
+      "cat": "jorvix",
+      "status": "todo",
+      "due": "2026-06-30",
+      "collab": [],
+      "links": [],
+      "remarks": "Due this month.",
+      "completedAt": null
+    },
+    {
+      "id": "t7",
+      "title": "CODETRACE website theme",
+      "cat": "codetrace",
+      "status": "todo",
+      "due": "2026-06-30",
+      "collab": [],
+      "links": [],
+      "remarks": "Separate into individual pages — landing, about, contact, etc. Due this month.",
+      "completedAt": null
+    },
+    {
+      "id": "t8",
+      "title": "CODETRACE SMM layout",
+      "cat": "codetrace",
+      "status": "todo",
+      "due": "2026-07-10",
+      "collab": [],
+      "links": [],
+      "remarks": "",
+      "completedAt": null
+    },
+    {
+      "id": "t9",
+      "title": "Namecard designs for all",
+      "cat": "codetrace",
+      "status": "todo",
+      "due": null,
+      "collab": [],
+      "links": [],
+      "remarks": "",
+      "completedAt": null
+    },
+    {
+      "id": "t10",
+      "title": "Add personal profile on CODETRACE website?",
+      "cat": "codetrace",
+      "status": "todo",
+      "due": null,
+      "collab": [],
+      "links": [],
+      "remarks": "To confirm — pending decision.",
+      "completedAt": null
+    },
+    {
+      "id": "t11",
+      "title": "Deep Learning AI course",
+      "cat": "nvidia",
+      "status": "todo",
+      "due": null,
+      "collab": [],
+      "links": [],
+      "remarks": "",
+      "completedAt": null
+    },
+    {
+      "id": "t12",
+      "title": "Generative AI with Diffusion Models",
+      "cat": "nvidia",
+      "status": "todo",
+      "due": null,
+      "collab": [],
+      "links": [],
+      "remarks": "",
+      "completedAt": null
+    },
+    {
+      "id": "t13",
+      "title": "AI Platforms",
+      "cat": "nvidia",
+      "status": "todo",
+      "due": null,
+      "collab": [],
+      "links": [],
+      "remarks": "",
+      "completedAt": null
+    }
   ],
   "meetings": []
 }
