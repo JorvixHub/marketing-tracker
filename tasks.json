@@ -179,6 +179,20 @@
       "subtasks": [],
       "remarks": "",
       "completedAt": "2026-06-23"
+    },
+    {
+      "id": "tmqq9zrto3ts3",
+      "title": "Meeting with Richmond Asia (Scott)",
+      "cat": "jorvix",
+      "status": "todo",
+      "priority": "normal",
+      "focusDate": null,
+      "due": null,
+      "collab": [],
+      "links": [],
+      "subtasks": [],
+      "remarks": "",
+      "completedAt": null
     }
   ],
   "meetings": []
