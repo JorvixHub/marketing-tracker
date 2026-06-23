@@ -170,7 +170,7 @@
       "id": "tmqq9zabf3b4m",
       "title": "Meeting with Mr Clean (James & Shan)",
       "cat": "codetrace",
-      "status": "todo",
+      "status": "done",
       "priority": "normal",
       "focusDate": null,
       "due": "2026-06-23",
@@ -178,7 +178,7 @@
       "links": [],
       "subtasks": [],
       "remarks": "",
-      "completedAt": null
+      "completedAt": "2026-06-23"
     }
   ],
   "meetings": []
