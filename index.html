@@ -955,7 +955,7 @@ async function pushGitHub(){
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(payload,null,2))));
     const body={message:'Update '+new Date().toISOString(),content};if(sync.sha)body.sha=sync.sha;
     const r=await fetch(url,{method:'PUT',headers:ghHeaders(),body:JSON.stringify(body)});
-    if(!r.ok)throw 0;const j=await r.json();sync.sha=j.content.sha;save(LS_SYNC,sync);setSync('live');
+    if(!r.ok){lastSyncErr=await errDetail(r);throw 0;}const j=await r.json();sync.sha=j.content.sha;save(LS_SYNC,sync);setSync('live');
   }catch(e){setSync('err');}
 }
 async function pullGitHub(){
@@ -964,17 +964,19 @@ async function pullGitHub(){
     const url=`https://api.github.com/repos/${sync.owner}/${sync.repo}/contents/${sync.path}`;
     const r=await fetch(url,{headers:ghHeaders()});
     if(r.status===404){setSync('live');return;}
-    if(!r.ok)throw 0;const j=await r.json();sync.sha=j.sha;
+    if(!r.ok){lastSyncErr=await errDetail(r);throw 0;}const j=await r.json();sync.sha=j.sha;
     const data=JSON.parse(decodeURIComponent(escape(atob(j.content))));
     if(Array.isArray(data)){tasks=data;}            // back-compat with v2 format
     else{if(Array.isArray(data.tasks))tasks=data.tasks;if(Array.isArray(data.meetings))meetings=data.meetings;}
     save(LS_TASKS,tasks);save(LS_MEET,meetings);render();save(LS_SYNC,sync);setSync('live');
   }catch(e){setSync('err');}
 }
+let lastSyncErr='';
+async function errDetail(r){try{const j=await r.json();return r.status+(j&&j.message?(' '+j.message):'');}catch(e){return String(r.status);}}
 function ghHeaders(){return{'Authorization':'Bearer '+sync.token,'Accept':'application/vnd.github+json','Content-Type':'application/json'}}
-function setSync(s){const p=document.getElementById('syncPill'),t=document.getElementById('syncText');p.classList.remove('live','err');
+function setSync(s){const p=document.getElementById('syncPill'),t=document.getElementById('syncText');p.classList.remove('live','err');p.title='';
   if(s==='live'){p.classList.add('live');t.textContent='Synced';}else if(s==='saving'){t.textContent='Saving…';}
-  else if(s==='err'){p.classList.add('err');t.textContent='Sync error';}else t.textContent='Local only';}
+  else if(s==='err'){p.classList.add('err');t.textContent='Sync error'+(lastSyncErr?' · '+lastSyncErr:'');p.title=lastSyncErr;if(lastSyncErr)alert('Sync error:\n'+lastSyncErr);}else t.textContent='Local only';}
 
 /* settings */
 function openSettings(){document.getElementById('sOwner').value=sync.owner;document.getElementById('sRepo').value=sync.repo;document.getElementById('sPath').value=sync.path||'tasks.json';document.getElementById('sToken').value=sync.token;document.getElementById('setScrim').classList.add('on');}
