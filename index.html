@@ -429,7 +429,7 @@ body.entered .bar,body.entered .wrap{animation:appIn .5s ease forwards}
 
     <div id="mtToday"></div>
 
-    <div class="sec-head"><h2>Today's focus</h2><span class="count" id="focusCount"></span></div>
+    <div class="sec-head"><h2>Big 3 — focus</h2><span class="count" id="focusCount"></span></div>
     <div id="focusBox"></div>
 
     <div class="sec-head"><h2>Needs attention</h2><span class="count" id="attCount"></span></div>
@@ -667,13 +667,14 @@ function byDue(a,b){if(!a.due)return 1;if(!b.due)return -1;return new Date(a.due
 const PRANK={high:0,normal:1,low:2};
 function prioOf(t){return t.priority||'normal';}
 function byPriDue(a,b){const d=PRANK[prioOf(a)]-PRANK[prioOf(b)];return d!==0?d:byDue(a,b);}
-function isFocus(t){return t.focusDate===todayIso();}
+function isFocus(t){return !!t.focusDate;}  /* sticky: stays until done or un-starred */
+function bigCount(){return tasks.filter(x=>x.focusDate&&x.status!=='done').length;}
 function prioChip(t){const p=prioOf(t);return p==='high'?'<span class="prio-chip high">High</span>':p==='low'?'<span class="prio-chip low">Low</span>':'';}
 function subDone(t){const s=t.subtasks||[];return {done:s.filter(x=>x.done).length,total:s.length};}
 function subBadge(t){const{done,total}=subDone(t);return total?`<span class="sub-badge">☑ ${done}/${total}</span>`:'';}
 function toggleFocus(id,ev){if(ev)ev.stopPropagation();const t=tasks.find(x=>x.id===id);if(!t)return;
   if(isFocus(t)){t.focusDate=null;}
-  else{const n=tasks.filter(x=>isFocus(x)).length;if(n>=3){alert("Today's focus is a short list — keep the Big 3 to three. Clear one first.");return;}t.focusDate=todayIso();}
+  else{if(bigCount()>=3){alert("Your Big 3 is a short list — keep it to three. Finish or un-star one first.");return;}t.focusDate=todayIso();}
   persist();render();}
 function isoIn(d){const x=new Date();x.setDate(x.getDate()+d);return x.toISOString().slice(0,10)}
 
@@ -887,8 +888,9 @@ function saveTask(){
   const status=document.getElementById('fStatus').value;
   const cat=document.querySelector('#catpick button.on')?.dataset.cat||'codetrace';
   const prio=document.querySelector('#priopick button.on')?.dataset.prio||manualPrio||'normal';
-  let focusDate=document.getElementById('fFocus').checked?todayIso():null;
-  if(focusDate){const others=tasks.filter(x=>isFocus(x)&&x.id!==editingId).length;if(others>=3){alert("You already have 3 focus tasks today — keep the Big 3 to three. This one wasn't added to focus.");focusDate=null;}}
+  const curTask=editingId?tasks.find(x=>x.id===editingId):null;
+  let focusDate=document.getElementById('fFocus').checked?((curTask&&curTask.focusDate)||todayIso()):null;
+  if(focusDate&&!(curTask&&curTask.focusDate)){const others=tasks.filter(x=>x.focusDate&&x.status!=='done'&&x.id!==editingId).length;if(others>=3){alert("Your Big 3 is a short list — keep it to three. This one wasn't added.");focusDate=null;}}
   const data={title,cat,status,priority:prio,focusDate,due:document.getElementById('fDue').value||null,
     collab:document.getElementById('fCollab').value.split(',').map(s=>s.trim()).filter(Boolean),
     links:collectLinks(),subtasks:collectSubtasks(),remarks:document.getElementById('fRemarks').value.trim()};
