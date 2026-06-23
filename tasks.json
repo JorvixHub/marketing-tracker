@@ -9,7 +9,10 @@
       "collab": [],
       "links": [],
       "remarks": "",
-      "completedAt": null
+      "completedAt": null,
+      "priority": "normal",
+      "focusDate": "2026-06-23",
+      "subtasks": []
     },
     {
       "id": "t2",
