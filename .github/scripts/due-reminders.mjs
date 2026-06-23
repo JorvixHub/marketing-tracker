@@ -33,7 +33,7 @@ const tasks = Array.isArray(data) ? data : (data.tasks || []);
 
 const today = todayInTZ();
 const open = tasks.filter(t => t && t.status !== 'done');
-const focus    = open.filter(t => t.focusDate === today).sort(byPriDue);
+const focus    = open.filter(t => t.focusDate).sort(byPriDue);  /* sticky Big 3: any focused, not-done task */
 const dated    = open.filter(t => t.due);
 const overdue  = dated.filter(t => daysTo(t.due, today) < 0).sort(byPriDue);
 const dueToday = dated.filter(t => daysTo(t.due, today) === 0).sort(byPriDue);
