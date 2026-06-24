@@ -81,7 +81,10 @@
       "collab": [],
       "links": [],
       "remarks": "Separate into individual pages — landing, about, contact, etc. Due this month.",
-      "completedAt": null
+      "completedAt": null,
+      "priority": "high",
+      "focusDate": "2026-06-24",
+      "subtasks": []
     },
     {
       "id": "t8",
