@@ -187,7 +187,7 @@
       "id": "tmqq9zrto3ts3",
       "title": "Meeting with Richmond Asia (Scott)",
       "cat": "jorvix",
-      "status": "progress",
+      "status": "done",
       "priority": "normal",
       "focusDate": null,
       "due": "2026-06-24",
@@ -195,7 +195,7 @@
       "links": [],
       "subtasks": [],
       "remarks": "",
-      "completedAt": null
+      "completedAt": "2026-06-24"
     },
     {
       "id": "tmqqbf284nwfz",
