@@ -1,11 +1,13 @@
 name: Due-task email reminders
 
 # Emails Emily anything overdue or due today.
-# Runs daily at 08:00 Malaysia time (00:00 UTC), and can be run manually
-# from the Actions tab (workflow_dispatch) to test.
+# Runs daily ~08:17 Malaysia time. NOTE: GitHub's scheduler is best-effort and
+# the top-of-hour (minute :00) is its most congested/delayed slot, so we use an
+# off-peak minute (:17) to land closer to 8am. You can also run it on demand
+# from the Actions tab (workflow_dispatch).
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '17 0 * * *'
   workflow_dispatch:
 
 permissions:
