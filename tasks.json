@@ -224,6 +224,20 @@
       "subtasks": [],
       "remarks": "",
       "completedAt": "2026-06-25"
+    },
+    {
+      "id": "tmqt64uv8nrq8",
+      "title": "Servex AI Data Training Notes file",
+      "cat": "codetrace",
+      "status": "todo",
+      "priority": "high",
+      "focusDate": null,
+      "due": "2026-06-26",
+      "collab": [],
+      "links": [],
+      "subtasks": [],
+      "remarks": "",
+      "completedAt": null
     }
   ],
   "meetings": []
