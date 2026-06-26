@@ -243,7 +243,7 @@
       "id": "tmqun3vfc8ov3",
       "title": "Servex Training ISO Forms to NOE jie",
       "cat": "director",
-      "status": "progress",
+      "status": "done",
       "priority": "high",
       "focusDate": "2026-06-26",
       "due": "2026-06-26",
@@ -251,7 +251,7 @@
       "links": [],
       "subtasks": [],
       "remarks": "",
-      "completedAt": null
+      "completedAt": "2026-06-26"
     }
   ],
   "meetings": []
