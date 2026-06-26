@@ -233,7 +233,11 @@
       "priority": "high",
       "focusDate": "2026-06-25",
       "due": "2026-06-26",
-      "collab": [],
+      "collab": [
+        "Jason",
+        "Emily",
+        "Claude"
+      ],
       "links": [],
       "subtasks": [],
       "remarks": "",
