@@ -261,7 +261,7 @@
       "id": "tmqyijyl4xl63",
       "title": "Email to all 15 companies for data collection",
       "cat": "jorvix",
-      "status": "progress",
+      "status": "done",
       "priority": "high",
       "focusDate": "2026-06-29",
       "due": "2026-06-29",
@@ -269,7 +269,7 @@
       "links": [],
       "subtasks": [],
       "remarks": "",
-      "completedAt": null
+      "completedAt": "2026-06-29"
     },
     {
       "id": "tmqyikj2cxc0u",
