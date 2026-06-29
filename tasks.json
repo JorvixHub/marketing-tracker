@@ -270,6 +270,20 @@
       "subtasks": [],
       "remarks": "",
       "completedAt": null
+    },
+    {
+      "id": "tmqyikj2cxc0u",
+      "title": "Review BOSUM Video V 3.0",
+      "cat": "jorvix",
+      "status": "progress",
+      "priority": "high",
+      "focusDate": null,
+      "due": "2026-06-29",
+      "collab": [],
+      "links": [],
+      "subtasks": [],
+      "remarks": "",
+      "completedAt": null
     }
   ],
   "meetings": []
