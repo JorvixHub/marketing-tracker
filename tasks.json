@@ -275,7 +275,7 @@
       "id": "tmqyikj2cxc0u",
       "title": "Review BOSUM Video V 3.0",
       "cat": "jorvix",
-      "status": "blocked",
+      "status": "done",
       "priority": "high",
       "focusDate": null,
       "due": "2026-06-29",
@@ -283,7 +283,7 @@
       "links": [],
       "subtasks": [],
       "remarks": "",
-      "completedAt": null
+      "completedAt": "2026-06-29"
     },
     {
       "id": "tmqyil3losnva",
