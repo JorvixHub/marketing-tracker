@@ -312,6 +312,20 @@
       "subtasks": [],
       "remarks": "",
       "completedAt": null
+    },
+    {
+      "id": "tmr1em7c8ujd7",
+      "title": "南洋商报金鹰奖 2026",
+      "cat": "director",
+      "status": "progress",
+      "priority": "high",
+      "focusDate": "2026-07-01",
+      "due": "2026-07-01",
+      "collab": [],
+      "links": [],
+      "subtasks": [],
+      "remarks": "",
+      "completedAt": null
     }
   ],
   "meetings": []
